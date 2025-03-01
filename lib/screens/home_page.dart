@@ -74,18 +74,30 @@ class _HomePageState extends State<HomePage> {
               Tab(text: "In Progress"),
               Tab(text: "Completed"),
             ],
+            onTap: (index){
+              final todoProvider = Provider.of<TodoProvider>(context, listen: false);
+              if(index==0){
+                if (todoProvider.todos.isEmpty && todoProvider.hasMore) {
+                  todoProvider.loadMoreCompleted();
+                }
+              }
+              if(index==1) {
+                todoProvider.loadMoreInProgress();
+              }
+              if(index==2){
+                if (todoProvider.completed.isEmpty && todoProvider.hasMore) {
+                  todoProvider.loadMoreCompleted();
+                }
+              }
+            },
           ),
         ),
-        body:  Consumer<TodoProvider>(
-            builder: (context, todoProvider, child) {
-            return TabBarView(
-              children: [
-                TodoListTab(),
-                ProgresstTab(),
-                CompletedTab(),
-              ],
-            );
-          }
+        body:  TabBarView(
+          children: [
+            TodoListTab(),
+            ProgresstTab(),
+            CompletedTab(),
+          ],
         ),
       ),
     );

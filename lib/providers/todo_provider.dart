@@ -35,6 +35,7 @@ class TodoProvider extends ChangeNotifier {
       // Add fetched todos to `_todos` list
       _todos.clear(); // Clear old data before adding new ones
       _completed.clear();
+      _inProgress.clear();
       _todos.addAll(await _dbHelper.getPendingTodos(_limit, _offset));
       _completed.addAll(await _dbHelper.getCompletedTasks(_limit, _offset));
       _inProgress.addAll(await _dbHelper.getInProgressTasks());
@@ -45,19 +46,12 @@ class TodoProvider extends ChangeNotifier {
   }
 
   Future<void> loadMoreInProgress() async {
-    if (_isLoading || !_hasMore) return;
     try {
       _isLoading = true;
       notifyListeners();
 
-      List<TodoModel> newTodos = await _dbHelper.getInProgressTasks();
-
-      if (newTodos.isNotEmpty) {
-        _inProgress.addAll(newTodos); //Append new todos correctly
-        _offset += _limit;
-      } else {
-        _hasMore = false;
-      }
+      _inProgress.clear();
+      _inProgress.addAll(await _dbHelper.getInProgressTasks());
 
       _isLoading = false;
       notifyListeners();
