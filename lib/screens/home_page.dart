@@ -25,8 +25,6 @@ class _HomePageState extends State<HomePage> {
       final profileProvider =
       Provider.of<ProfileProvider>(context, listen: false);
       profileProvider.loadProfile(widget.userId);
-      final taskProvider = Provider.of<TodoProvider>(context, listen: false);
-      taskProvider.fetchAndStoreTodos();
     });
   }
 
@@ -78,12 +76,16 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        body: TabBarView(
-          children: [
-            TodoListTab(),
-            ProgresstTab(),
-            CompletedTab(),
-          ],
+        body:  Consumer<TodoProvider>(
+            builder: (context, todoProvider, child) {
+            return TabBarView(
+              children: [
+                TodoListTab(),
+                ProgresstTab(),
+                CompletedTab(),
+              ],
+            );
+          }
         ),
       ),
     );

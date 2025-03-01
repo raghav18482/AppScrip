@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/auth_provider.dart';
+import '../../providers/todo_provider.dart';
 import '../../services/cache.dart';
 import '../../services/common_services.dart';
 import '../home_page.dart';
@@ -58,6 +59,9 @@ class LoginPage extends StatelessWidget {
                         if (userid == null) {
                           CommonServices.showToast('Error: You don\'t have an account', Colors.red);
                           print("User ID not found");
+                        }else{
+                          final taskProvider = Provider.of<TodoProvider>(context, listen: false);
+                          taskProvider.fetchAndStoreTodos();
                         }
                         int id =  int.tryParse(userid ?? '0')!;
                         print("id=>$id");
