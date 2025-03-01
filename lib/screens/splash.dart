@@ -52,7 +52,7 @@ class _SplashscreenState extends State<Splashscreen>  with TickerProviderStateMi
         int id =  int.tryParse(userId ?? '0')!;
 
         print("id=>$id");
-        final screen = userid != null ?   HomePage(userId: id) :LoginPage();
+        final screen = userid != null ?   HomePage(userId: id) :SignUpPage();
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => screen));
 
       });
