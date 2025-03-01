@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../services/cache.dart';
+import '../services/common_services.dart';
 import 'auth/login.dart';
 import 'auth/signup.dart';
 
@@ -47,6 +48,7 @@ class _SplashscreenState extends State<Splashscreen>  with TickerProviderStateMi
         if (userid != null) {
           userId = userid;
         } else {
+          CommonServices.showToast('Error: You don\'t have an account', Colors.red);
           print("User ID not found");
         }
         int id =  int.tryParse(userId ?? '0')!;

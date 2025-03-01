@@ -48,7 +48,7 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> login(BuildContext context,String username,String password) async {
+  Future<String?> login(BuildContext context,String username,String password) async {
     _isLoading = true;
     _error = null;
     notifyListeners();
@@ -64,13 +64,13 @@ class AuthProvider extends ChangeNotifier {
       _isLoading = false;
       if (_token == null) {
         print("Token is null");
-        return;
       }
       _getId(_token!).then((userId) {
         id = userId;
       });
       print('id=>$id');
       notifyListeners();
+      return _token;
     }
   }
 

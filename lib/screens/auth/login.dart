@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/auth_provider.dart';
+import '../../services/cache.dart';
+import '../../services/common_services.dart';
 import '../home_page.dart';
 
 class LoginPage extends StatelessWidget {
@@ -51,7 +53,18 @@ class LoginPage extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () async {
                     // Handle login logic here
-                    await authProvider.login(context,authProvider.usernameLoginController.text, authProvider.passwordLoginController.text).then((id){
+                    await authProvider.login(context,authProvider.usernameLoginController.text, authProvider.passwordLoginController.text).then((authToken){
+                      Cache().getsharedprefs(authToken).then((userid) {
+                        if (userid == null) {
+                          CommonServices.showToast('Error: You don\'t have an account', Colors.red);
+                          print("User ID not found");
+                        }
+                        int id =  int.tryParse(userid ?? '0')!;
+                        print("id=>$id");
+                        final screen = userid != null ?   HomePage(userId: id) :SignUpPage();
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => screen));
+                      });
+
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => HomePage(userId: authProvider.id,)),
