@@ -9,7 +9,27 @@ import '../../services/cache.dart';
 import '../../services/common_services.dart';
 import '../home_page.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  double _opacity = 0.0;
+  bool _isLarge = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Start the animation after the widget is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        _opacity = 1.0;
+        _isLarge = true;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +41,16 @@ class LoginPage extends StatelessWidget {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  "Log In",
-                  style: TextStyle(fontSize: 42, fontWeight: FontWeight.w500),
+                  AnimatedOpacity(
+                  opacity: _opacity,
+                  duration: Duration(seconds: 1),
+                  child: Text(
+                    "Login",
+                    style: TextStyle(
+                      fontSize: _isLarge ? 40 : 20,
+                      color: _isLarge ? Colors.blue : Colors.black,
+                    ),
+                  ),
                 ),
                 SizedBox(height: 16),
                 TextField(

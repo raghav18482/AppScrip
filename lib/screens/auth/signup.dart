@@ -5,7 +5,28 @@ import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
 
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
+
+  @override
+  State<SignUpPage> createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
+
+  double _opacity = 0.0;
+  bool _isLarge = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Start the animation after the widget is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        _opacity = 1.0;
+        _isLarge = true;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +38,16 @@ class SignUpPage extends StatelessWidget {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  "Sign Up",
-                  style: TextStyle(fontSize: 42, fontWeight: FontWeight.w500),
+                AnimatedOpacity(
+                  opacity: _opacity,
+                  duration: Duration(seconds: 1),
+                  child: Text(
+                    "Sign Up",
+                    style: TextStyle(
+                      fontSize: _isLarge ? 40 : 20,
+                      color: _isLarge ? Colors.blue : Colors.black,
+                    ),
+                  ),
                 ),
                 SizedBox(height: 16),
                 TextField(
